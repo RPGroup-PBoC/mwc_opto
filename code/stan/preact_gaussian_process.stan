@@ -50,9 +50,9 @@ transformed parameters {
 
 model {
     // Priors
-    rho ~ std_normal(); 
-    alpha ~ std_normal();
-    sigma ~ std_normal();
+    rho ~ inv_gamma(2, 2); 
+    alpha ~ normal(0, 1);
+    sigma ~ normal(0, 1);
     eta ~ std_normal();
 
     // Define the Gaussian process

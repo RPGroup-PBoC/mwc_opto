@@ -4,10 +4,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import light.viz
 colors = light.viz.plotting_style()
+palette = colors.values()
 
 # Load the dataset. 
-data = pd.read_csv('../processing/20200701_abrar_processed_munging/output/20200701_abrar_processed_data_tidy.csv')
-exp1 = data[data['experiment_id']==1]
+data = pd.read_csv('../../data/preprocessed_data_tidy.csv')
+
 
 # Load the sampling info
 predicted = pd.read_csv('../../data/preact_gaussian_process_prediction.csv')
@@ -20,14 +21,18 @@ ax.set_xlabel('time [min]')
 ax.set_ylabel('preactivation intensity [a.u.]')
 
 #plot the result of the gaussian process.
-_ = ax.plot(predicted['time'], predicted['mean'], '-', lw=1, color=colors['red'],
+_colors = [colors['red'], colors['blue'], colors['green'], colors['purple'], 'k', 
+           colors['dark_brown'], ]
+exp_ids = data['experiment_id'].unique()
+for i, no in enumerate(exp_ids):
+    _data = data[data['experiment_id']==no]
+    _predicted = predicted[predicted['experiment_id']==no]
+    _ = ax.plot(_predicted['time'], _predicted['mean'], '-', lw=1, color=_colors[i],
             label='Gaussian process mean value')
-_ = ax.fill_between(predicted['time'], predicted['hpd_min'], predicted['hpd_max'], 
-            color=colors['red'], alpha=0.25, label='95% credible region')
-
-_ = ax.plot(exp1['time_min'], exp1['preact_intensity'], 'o', color=colors['red'], ms=5,
+    _ = ax.fill_between(_predicted['time'], _predicted['hpd_min'], _predicted['hpd_max'], 
+            color=_colors[i], alpha=0.25, label='95% credible region')
+    _ = ax.plot(_data['time_min'], _data['preact_intensity'], 'o', color=_colors[i], ms=5,
             label='observation')
-_ = ax.legend()
-
+# _ = ax.legend()
 
 # %%
