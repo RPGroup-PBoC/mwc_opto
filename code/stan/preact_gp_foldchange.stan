@@ -4,6 +4,9 @@ data {
     vector[N] x; // Observed variate
     vector[N_predict] x_predict; // Predicted variate
     vector[N] y; // Covariate
+
+    // Define the total mCherry intensity points. 
+    vector[N] total_intensity;
 }
 
 transformed data {
@@ -62,8 +65,14 @@ generated quantities {
     // Draw predicted values. 
     vector[N_predict] y_predict_scaled;
     vector [N_predict] y_predict;
+    vector[N] fc_bg;
+    vector[N] fc;
+    for (i in 1:N) fc_bg[i] = normal_rng(f[i], sigma);
     for (i in 1:N_predict) y_predict_scaled[i] = normal_rng(f[N + i], sigma);
 
     // Compute the uncentering operations 
     y_predict = sd(y) * y_predict_scaled  + mean(y);
+
+    // Compute the fold-change
+    fc = total_intensity ./  fc_bg;
 }

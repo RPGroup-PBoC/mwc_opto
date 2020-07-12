@@ -34,5 +34,11 @@ for i, no in enumerate(exp_ids):
     _ = ax.plot(_data['time_min'], _data['preact_intensity'], 'o', color=_colors[i], ms=5,
             label='observation')
 # _ = ax.legend()
+plt.savefig('./preactivation_gaussian_process_fitting.pdf')
 
+# %%
+samples = pd.read_csv('../../data/preact_gaussian_process_samples.csv')
+fig, ax = plt.subplots(1, 1)
+ax.set_yscale('log')
+ax.plot(samples['alpha'], samples['rho'], '.')
 # %%

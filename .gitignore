@@ -1,0 +1,11 @@
+*.pkl
+*.swp
+*.DS_*tore
+*.bbl
+*.log
+*.tif*
+*.pkl 
+*.egg-info
+*.pyc*
+*.*checkpoints*
+*checkpoints*
