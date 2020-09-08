@@ -48,7 +48,7 @@ transformed parameters {
 
 model {
     // Priors
-    rho ~ inv_gamma(2, 2); 
+    rho ~ inv_gamma(0.1, 2); 
     alpha ~ normal(0, 0.1);
     sigma ~ normal(0, 0.1);
     eta ~ std_normal();

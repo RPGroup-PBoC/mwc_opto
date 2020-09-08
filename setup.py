@@ -4,7 +4,7 @@ from os import path
 __version__ = "0.0.01"
 
 setup(
-    name="light",
+    name="photo",
     version=__version__,
     description="Various python utilities used for analysis of 'light as a ligand' data",
     license="BSD",
