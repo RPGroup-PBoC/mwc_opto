@@ -6,7 +6,7 @@ import pystan
 import bokeh.plotting
 import tqdm
 from .stats import compute_statistics
-from .stats import compute_hpd
+from .stats import compute_hpd, compute_deciles
 
 
 class StanModel(object):
@@ -121,18 +121,7 @@ class StanModel(object):
             par_dims = desired_pars
 
         # Iterate through each parameter and compute the aggregate properties.
-        df = pd.DataFrame(
-            [],
-            columns=[
-                "parameter",
-                "dimension",
-                "mean" "mode",
-                "median",
-                "hpd_min",
-                "hpd_max",
-                "mass_fraction",
-            ],
-        )
+        df = pd.DataFrame([])
         for par, dim in par_dims.items():
             par_samples = fit[par]
             if dim == 1:
@@ -143,6 +132,7 @@ class StanModel(object):
                 par_mean = np.mean(par_samples[:, j])
                 par_median = np.median(par_samples[:, j])
                 hpd_min, hpd_max = compute_hpd(par_samples[:, j], mass_frac=mass_frac)
+                deciles = compute_deciles(par_samples[:, j])
 
                 # Assemble a dictionary to append to the data frame
                 par_dict = {
@@ -155,6 +145,11 @@ class StanModel(object):
                     "hpd_max": hpd_max,
                     "mass_fraction": mass_frac,
                 }
+
+                for k, v in deciles.items():
+                    par_dict[f'{k}_percentile_lower'] = v[0]
+                    par_dict[f'{k}_percentile_upper'] = v[1]
+
                 df = df.append(par_dict, ignore_index=True)
         df["dimension"] = df["dimension"].astype(int)
         return df

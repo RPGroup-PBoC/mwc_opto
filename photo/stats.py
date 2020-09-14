@@ -97,3 +97,38 @@ def compute_hpd(trace, mass_frac):
 
     # Return interval
     return np.array([d[min_int], d[min_int + n_samples]])
+
+def compute_deciles(trace):
+    """
+    Computes the set of deciles from a given trace.
+
+    Parameters
+    ----------
+    trace: array 
+        1D array of values from which the deciles will be computed.
+
+    Returns
+    -------
+    deciles: dict 
+        A dictionary for each decile with the lower and upper bound values.
+    """
+    
+    intervals = {'90th': [5, 95],
+                 '80th': [10, 90],
+                 '70th': [15, 85],
+                 '60th': [20, 80],
+                 '50th': [25, 75],
+                 '40th': [30, 70],
+                 '30th': [35, 65],
+                 '20th': [40, 60],
+                 '10th': [45, 55],
+                 '1st': [49.5, 50.5]}
+
+    deciles = {'100th': [trace.min(), trace.max()]}
+
+    for k, v in intervals.items():
+        deciles[k] = np.percentile(trace, v)
+    
+    return deciles
+
+    

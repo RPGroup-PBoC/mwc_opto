@@ -47,8 +47,8 @@ model {
                      + diag_matrix(rep_vector(square(sigma), N));
   matrix[N, N] L_cov = cholesky_decompose(cov);
 
-  rho ~ inv_gamma(2, 0.5);
-  alpha ~ inv_gamma(0.01, 0.1);
+  rho ~ normal(0, 1000);
+  alpha ~ normal(0, 10);
   sigma ~ normal(0, 0.1);
 
   y_scaled ~ multi_normal_cholesky(rep_vector(0, N), L_cov);
