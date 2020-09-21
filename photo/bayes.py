@@ -135,22 +135,25 @@ class StanModel(object):
                 deciles = compute_deciles(par_samples[:, j])
 
                 # Assemble a dictionary to append to the data frame
-                par_dict = {
-                    "parameter": par,
-                    "dimension": j + 1,
-                    "mean": par_mean,
-                    "mode": par_mode,
-                    "median": par_median,
-                    "hpd_min": hpd_min,
-                    "hpd_max": hpd_max,
-                    "mass_fraction": mass_frac,
-                }
+                for k, v in zip(['mean', 'mode', 'median', '95_hpd_min', '95_hpd_max'],
+                                [par_mean, par_mode, par_median, hpd_min, hpd_max]):
+                    par_dict = {
+                        "parameter": par,
+                        "dimension": j + 1,
+                        "quantity": k,
+                        "value": v}
+                       
+                    df = df.append(par_dict, ignore_index=True)
+                    
+                    for _k, _v in deciles.items():
+                        for __k, __v in zip(['lower', 'upper'], _v):
+                            par_dict = {
+                                'parameter': par,
+                                'dimension': j+1,
+                                'quantity': f'{_k}th_{__k}',
+                                'value': __v}
+                            df = df.append(par_dict, ignore_index=True)
 
-                for k, v in deciles.items():
-                    par_dict[f'{k}_percentile_lower'] = v[0]
-                    par_dict[f'{k}_percentile_upper'] = v[1]
-
-                df = df.append(par_dict, ignore_index=True)
         df["dimension"] = df["dimension"].astype(int)
         return df
 

@@ -25,7 +25,7 @@ transformed parameters {
 
 model { 
     vector[N] mu = saturation[idx] .* (1 - exp(-relative_time .* observed_onrate[idx]));
-    kon ~ lognormal(0, 3);
+    kon ~ std_normal();
     saturation ~ normal(0, 100);
     sigma ~ normal(0, 10);
     mcherry_sub ~ normal(mu, sigma[idx]);
