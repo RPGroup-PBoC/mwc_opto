@@ -8,4 +8,7 @@
 *.egg-info
 *.pyc*
 *.*checkpoints*
-*checkpoints*
+*checkpoints*data/exp3_preact_gp_samples.csv
+data/preact_gaussian_process_samples.csv
+data/exp3_kinetic_samples.csv
+data/exp3_saturation_inference.csv
