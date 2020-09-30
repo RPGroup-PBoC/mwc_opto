@@ -1,4 +1,4 @@
-# `mwc_photo`
+# `mwc_opto`
 This repository holds my data analysis research related to the 'light as a
 ligand' research topic in active matter. This repository is currently private, 
 though will be made public when ready. 
